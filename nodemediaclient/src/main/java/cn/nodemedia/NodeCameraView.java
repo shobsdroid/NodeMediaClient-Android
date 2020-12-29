@@ -304,8 +304,6 @@ public class NodeCameraView extends FrameLayout implements GLSurfaceView.Rendere
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
         Log.d(TAG, "GL onSurfaceChanged");
-        mCameraWidth = getPreviewSize().width;
-        mCameraHeight = getPreviewSize().height;
         mSurfaceWidth = width;
         mSurfaceHeight = height;
         if (mNodeCameraViewCallback != null) {
