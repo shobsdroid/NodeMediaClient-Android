@@ -53,6 +53,7 @@ public class NodeCameraView extends FrameLayout implements GLSurfaceView.Rendere
     private int mSurfaceHeight;
     private NodeCameraViewCallback mNodeCameraViewCallback;
     private boolean isMediaOverlay = false;
+
     public NodeCameraView(@NonNull Context context) {
         super(context);
         initView(context);
@@ -193,31 +194,28 @@ public class NodeCameraView extends FrameLayout implements GLSurfaceView.Rendere
     }
 
     public int setAutoFocus(boolean isAutoFocus) {
-        this.isAutoFocus = isAutoFocus;
         if (mCamera == null) {
             return -1;
         }
-        Parameters parameters = mCamera.getParameters();
-        if (isAutoFocus) {
-            Log.i("video", Build.MODEL);
+        try {
+            Parameters parameters = mCamera.getParameters();
             List<String> focusModes = parameters.getSupportedFocusModes();
-
-            if (((Build.MODEL.startsWith("GT-I950"))
-                    || (Build.MODEL.endsWith("SCH-I959"))
-                    || (Build.MODEL.endsWith("MEIZU MX3")))
-                    && focusModes.contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
-                parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
-            } else if (focusModes.contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO)) {
-                parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
+            if (isAutoFocus) {
+                if (focusModes.contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO)) {
+                    parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
+                }
+            } else {
+                if (focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
+                    parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+                }
+                mCamera.autoFocus(null);
             }
-        } else {
-            List<String> fms = parameters.getSupportedFocusModes();
-            if (fms.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
-                parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
-            }
-            mCamera.autoFocus(null);
+            mCamera.setParameters(parameters);
+            this.isAutoFocus = isAutoFocus;
+        } catch (Exception e) {
+            return -2;
         }
-        mCamera.setParameters(parameters);
+
         return 0;
     }
 
@@ -225,24 +223,24 @@ public class NodeCameraView extends FrameLayout implements GLSurfaceView.Rendere
         if (mCamera == null) {
             return -1;
         }
-        Parameters parameters = mCamera.getParameters();
-        List<String> flashModes = parameters.getSupportedFlashModes();
-        if (flashModes == null) {
-            return -1;
-        }
-        if (flashModes.contains(Parameters.FLASH_MODE_TORCH) && flashModes.contains(Parameters.FLASH_MODE_OFF)) {
-            int ret = 1;
-            if (on) {
-                parameters.setFlashMode(Parameters.FLASH_MODE_TORCH);
-            } else {
-                parameters.setFlashMode(Parameters.FLASH_MODE_OFF);
-                ret = 0;
+        try {
+            Parameters parameters = mCamera.getParameters();
+            List<String> flashModes = parameters.getSupportedFlashModes();
+            if (flashModes == null) {
+                return -1;
             }
-            mCamera.setParameters(parameters);
-            return ret;
-        } else {
-            return -1;
+            if (flashModes.contains(Parameters.FLASH_MODE_TORCH) && flashModes.contains(Parameters.FLASH_MODE_OFF)) {
+                if (on) {
+                    parameters.setFlashMode(Parameters.FLASH_MODE_TORCH);
+                } else {
+                    parameters.setFlashMode(Parameters.FLASH_MODE_OFF);
+                }
+                mCamera.setParameters(parameters);
+            }
+        } catch (Exception e) {
+            return -2;
         }
+        return on ? 1 : 0;
     }
 
     public int switchCamera() {
@@ -304,14 +302,16 @@ public class NodeCameraView extends FrameLayout implements GLSurfaceView.Rendere
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
         Log.d(TAG, "GL onSurfaceChanged");
-        mSurfaceWidth = width;
-        mSurfaceHeight = height;
-        if (mNodeCameraViewCallback != null) {
-            mNodeCameraViewCallback.OnChange(mCameraWidth, mCameraHeight, mSurfaceWidth, mSurfaceHeight);
-        }
         try {
             mCamera.setPreviewTexture(mSurfaceTexture);
             mCamera.startPreview();
+            mSurfaceWidth = width;
+            mSurfaceHeight = height;
+            mCameraWidth = getPreviewSize().width;
+            mCameraHeight = getPreviewSize().height;
+            if (mNodeCameraViewCallback != null) {
+                mNodeCameraViewCallback.OnChange(mCameraWidth, mCameraHeight, mSurfaceWidth, mSurfaceHeight);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
