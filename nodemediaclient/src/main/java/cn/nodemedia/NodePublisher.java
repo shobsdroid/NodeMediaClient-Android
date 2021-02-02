@@ -70,6 +70,7 @@ public class NodePublisher implements NodeCameraView.NodeCameraViewCallback {
 
     public static final int AUDIO_PROFILE_LCAAC = 0;
     public static final int AUDIO_PROFILE_HEAAC = 1;
+    public static final int AUDIO_PROFILE_SPEEX = 2;
 
     public static final int VIDEO_PROFILE_BASELINE = 0;
     public static final int VIDEO_PROFILE_MAIN = 1;
