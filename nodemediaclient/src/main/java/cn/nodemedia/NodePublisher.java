@@ -23,6 +23,7 @@ public class NodePublisher implements NodeCameraView.NodeCameraViewCallback {
     private long id;
     private WindowManager wm = null;
     private NodePublisherDelegate mNodePublisherDelegate;
+    private NodePublisherAudioRawDelegate mNodePublisherAudioRawDelegate;
     private NodePublisherVideoTextureDelegate mNodePublisherVideoTextureDelegate;
     private CapturePictureListener mCapturePictureListener;
     private NodeCameraView mNodeCameraView;
@@ -244,9 +245,20 @@ public class NodePublisher implements NodeCameraView.NodeCameraViewCallback {
         this.mNodePublisherDelegate = delegate;
     }
 
+    public void setNodePublisherAudioRawDelegate(@NonNull NodePublisherAudioRawDelegate nodePublisherAudioRawDelegate) {
+        this.mNodePublisherAudioRawDelegate = nodePublisherAudioRawDelegate;
+        jniEnableAudioRawCallback();
+    }
+
     public void setNodePublisherVideoTextureDelegate(@NonNull NodePublisherVideoTextureDelegate nodePublisherVideoTextureDelegate) {
         this.mNodePublisherVideoTextureDelegate = nodePublisherVideoTextureDelegate;
         jniUseCustomFilter();
+    }
+
+    private void onAudioRaw(int channels, byte[] data, int size) {
+        if (mNodePublisherAudioRawDelegate != null) {
+            mNodePublisherAudioRawDelegate.onAudioRawCallback(this, channels, data, size);
+        }
     }
 
     private void onEvent(int event, String eventMsg) {
@@ -293,6 +305,8 @@ public class NodePublisher implements NodeCameraView.NodeCameraViewCallback {
 
     private native void jniUseCustomFilter();
 
+    private native void jniEnableAudioRawCallback();
+
     public native void setVideoParam(int preset, int fps, int bitrate, int profile, boolean frontMirror);
 
     public native void setAutoReconnectWaitTimeout(int autoReconnectWaitTimeout);
@@ -326,7 +340,7 @@ public class NodePublisher implements NodeCameraView.NodeCameraViewCallback {
 
     @Override
     public void OnCreate() {
-        if(this.mNodePublisherVideoTextureDelegate != null) {
+        if (this.mNodePublisherVideoTextureDelegate != null) {
             this.mNodePublisherVideoTextureDelegate.onCreateTextureCallback(this);
         }
         jniInitGPUImage();
@@ -356,7 +370,7 @@ public class NodePublisher implements NodeCameraView.NodeCameraViewCallback {
 
     @Override
     public void OnDestroy() {
-        if(this.mNodePublisherVideoTextureDelegate != null) {
+        if (this.mNodePublisherVideoTextureDelegate != null) {
             this.mNodePublisherVideoTextureDelegate.onDestroyTextureCallback(this);
         }
         jniFreeGPUImage();
