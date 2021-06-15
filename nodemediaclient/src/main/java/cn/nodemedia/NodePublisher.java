@@ -255,9 +255,9 @@ public class NodePublisher implements NodeCameraView.NodeCameraViewCallback {
         jniUseCustomFilter();
     }
 
-    private void onAudioRaw(int channels, byte[] data, int size) {
+    private void onAudioRaw(int channels, int samplerate, byte[] data, int size) {
         if (mNodePublisherAudioRawDelegate != null) {
-            mNodePublisherAudioRawDelegate.onAudioRawCallback(this, channels, data, size);
+            mNodePublisherAudioRawDelegate.onAudioRawCallback(this, channels, samplerate, data, size);
         }
     }
 
