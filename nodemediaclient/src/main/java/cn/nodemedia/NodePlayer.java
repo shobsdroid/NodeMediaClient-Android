@@ -2,7 +2,6 @@ package cn.nodemedia;
 
 import android.content.Context;
 import android.media.AudioManager;
-import android.support.annotation.NonNull;
 import android.view.Surface;
 
 
@@ -51,11 +50,11 @@ public class NodePlayer implements NodePlayerView.RenderCallback {
     public static final int NM_LOGLEVEL_INFO = 1;
     public static final int NM_LOGLEVEL_DEBUG = 2;
 
-    public NodePlayer(@NonNull Context context) {
+    public NodePlayer( Context context) {
         this(context, "");
     }
 
-    public NodePlayer(@NonNull Context context, @NonNull String license) {
+    public NodePlayer( Context context,  String license) {
         this.id = jniInit(context, license);
         this.inputUrl = "";
         this.pageUrl = "";
@@ -112,23 +111,23 @@ public class NodePlayer implements NodePlayerView.RenderCallback {
         }).start();
     }
 
-    public void setInputUrl(@NonNull String inputUrl) {
+    public void setInputUrl( String inputUrl) {
         this.inputUrl = inputUrl.trim();
     }
 
-    public void setPageUrl(@NonNull String pageUrl) {
+    public void setPageUrl( String pageUrl) {
         this.pageUrl = pageUrl.trim();
     }
 
-    public void setSwfUrl(@NonNull String swfUrl) {
+    public void setSwfUrl( String swfUrl) {
         this.swfUrl = swfUrl.trim();
     }
 
-    public void setConnArgs(@NonNull String connArgs) {
+    public void setConnArgs( String connArgs) {
         this.connArgs = connArgs;
     }
 
-    public void setRtspTransport(@NonNull String rtspTransport) {
+    public void setRtspTransport( String rtspTransport) {
         this.rtspTransport = rtspTransport;
     }
 
@@ -171,13 +170,13 @@ public class NodePlayer implements NodePlayerView.RenderCallback {
     }
 
 
-    public void setPlayerView(@NonNull NodePlayerView npv) {
+    public void setPlayerView( NodePlayerView npv) {
         mNodePlayerView = npv;
         jniSetVideoEnable(true);
         npv.setRenderCallback(this);
     }
 
-    public void setNodePlayerDelegate(@NonNull NodePlayerDelegate delegate) {
+    public void setNodePlayerDelegate( NodePlayerDelegate delegate) {
         mNodePlayerDelegate = delegate;
     }
 
@@ -228,7 +227,7 @@ public class NodePlayer implements NodePlayerView.RenderCallback {
     public native boolean isLive();
 
     @Override
-    public void onSurfaceCreated(@NonNull Surface surface) {
+    public void onSurfaceCreated( Surface surface) {
         jniSetSurface(surface);
     }
 

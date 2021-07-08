@@ -10,16 +10,11 @@ import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.os.Build;
-import android.support.annotation.AttrRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.widget.FrameLayout;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -54,23 +49,23 @@ public class NodeCameraView extends FrameLayout implements GLSurfaceView.Rendere
     private NodeCameraViewCallback mNodeCameraViewCallback;
     private boolean isMediaOverlay = false;
 
-    public NodeCameraView(@NonNull Context context) {
+    public NodeCameraView( Context context) {
         super(context);
         initView(context);
     }
 
-    public NodeCameraView(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public NodeCameraView(Context context,  AttributeSet attrs) {
         super(context, attrs);
         initView(context);
     }
 
-    public NodeCameraView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
+    public NodeCameraView(Context context,  AttributeSet attrs,  int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView(context);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public NodeCameraView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
+    public NodeCameraView(Context context,  AttributeSet attrs,  int defStyleAttr,  int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         initView(context);
     }

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.media.AudioManager;
-import android.support.annotation.NonNull;
 import android.view.WindowManager;
 
 import java.nio.ByteBuffer;
@@ -88,11 +87,11 @@ public class NodePublisher implements NodeCameraView.NodeCameraViewCallback {
     public static final int NM_LOGLEVEL_INFO = 1;
     public static final int NM_LOGLEVEL_DEBUG = 2;
 
-    public NodePublisher(@NonNull Context context) {
+    public NodePublisher(Context context) {
         this(context, "");
     }
 
-    public NodePublisher(@NonNull Context context, @NonNull String license) {
+    public NodePublisher(Context context, String license) {
         this.id = jniInit(context, license);
         this.outputUrl = "";
         this.pageUrl = "";
@@ -145,23 +144,23 @@ public class NodePublisher implements NodeCameraView.NodeCameraViewCallback {
         return wm.getDefaultDisplay().getRotation();
     }
 
-    public void setOutputUrl(@NonNull String outputUrl) {
+    public void setOutputUrl(String outputUrl) {
         this.outputUrl = outputUrl.trim();
     }
 
-    public void setPageUrl(@NonNull String pageUrl) {
+    public void setPageUrl(String pageUrl) {
         this.pageUrl = pageUrl.trim();
     }
 
-    public void setSwfUrl(@NonNull String swfUrl) {
+    public void setSwfUrl(String swfUrl) {
         this.swfUrl = swfUrl.trim();
     }
 
-    public void setConnArgs(@NonNull String connArgs) {
+    public void setConnArgs(String connArgs) {
         this.connArgs = connArgs;
     }
 
-    public void setCameraPreview(@NonNull NodeCameraView cameraPreview, int cameraID, boolean frontMirror) {
+    public void setCameraPreview(NodeCameraView cameraPreview, int cameraID, boolean frontMirror) {
         mNodeCameraView = cameraPreview;
         mNodeCameraView.setNodeCameraViewCallback(this);
         cameraId = cameraID;
@@ -241,16 +240,16 @@ public class NodePublisher implements NodeCameraView.NodeCameraViewCallback {
         jniRequestScreenShot();
     }
 
-    public void setNodePublisherDelegate(@NonNull NodePublisherDelegate delegate) {
+    public void setNodePublisherDelegate(NodePublisherDelegate delegate) {
         this.mNodePublisherDelegate = delegate;
     }
 
-    public void setNodePublisherAudioRawDelegate(@NonNull NodePublisherAudioRawDelegate nodePublisherAudioRawDelegate) {
+    public void setNodePublisherAudioRawDelegate(NodePublisherAudioRawDelegate nodePublisherAudioRawDelegate) {
         this.mNodePublisherAudioRawDelegate = nodePublisherAudioRawDelegate;
         jniEnableAudioRawCallback();
     }
 
-    public void setNodePublisherVideoTextureDelegate(@NonNull NodePublisherVideoTextureDelegate nodePublisherVideoTextureDelegate) {
+    public void setNodePublisherVideoTextureDelegate(NodePublisherVideoTextureDelegate nodePublisherVideoTextureDelegate) {
         this.mNodePublisherVideoTextureDelegate = nodePublisherVideoTextureDelegate;
         jniUseCustomFilter();
     }

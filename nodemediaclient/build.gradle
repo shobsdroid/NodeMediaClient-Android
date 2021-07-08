@@ -1,12 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 30
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 28
-        versionCode 2910
-        versionName "2.9.10"
+        targetSdkVersion 30
+        versionCode 2911
+        versionName "2.9.11"
     }
 
     buildTypes {
@@ -20,5 +20,4 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile "com.android.support:appcompat-v7:28.0.0"
 }
