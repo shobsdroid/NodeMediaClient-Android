@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.media.AudioManager;
+import android.util.Log;
 import android.view.WindowManager;
 
 import java.nio.ByteBuffer;
@@ -103,6 +104,7 @@ public class NodePublisher implements NodeCameraView.NodeCameraViewCallback {
             sAudioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
                 @Override
                 public void onAudioFocusChange(int focusChange) {
+                    Log.d("audiotest", String.valueOf(focusChange));
                     if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT) {
                         for (NodePublisher publisher : publishers) {
                             //麦克风静音
